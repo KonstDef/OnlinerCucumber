@@ -1,3 +1,4 @@
+.*/
 .*
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -5,7 +6,8 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
+.idea/*
 *.iws
 *.iml
 *.ipr

@@ -4,7 +4,7 @@
     <test name="Test">
         <classes>
             <class name="onliner.tests.NavigationTest"/>
-<!--            <class name="onliner.tests.FiltrationTest"/>-->
+            <class name="onliner.tests.FiltrationTest"/>
         </classes>
     </test>
 </suite>
