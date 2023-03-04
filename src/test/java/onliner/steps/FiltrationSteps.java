@@ -2,6 +2,7 @@ package onliner.steps;
 
 import io.cucumber.java.en.*;
 import onliner.pageObject.pages.AvtobaracholkaPage;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,4 +28,5 @@ public class FiltrationSteps {
     public void pageOpened() {
         avtobaracholkaPage.checkElementsData(testData);
     }
+
 }
