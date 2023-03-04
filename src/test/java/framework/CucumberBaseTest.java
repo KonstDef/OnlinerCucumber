@@ -3,9 +3,9 @@ package framework;
 import io.cucumber.testng.*;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.*;
-
 @Log4j2
-public abstract class CucumberBaseTest extends BaseTest{
+@Listeners(TestListener.class)
+public abstract class CucumberBaseTest{
     private TestNGCucumberRunner testNGCucumberRunner;
     public static PropertyReader properties = new PropertyReader("config.properties");
     public Browser driver = new Browser();
@@ -34,9 +34,7 @@ public abstract class CucumberBaseTest extends BaseTest{
         }
     }
 
-    @Test(groups = {"cucumber"},
-            description = "Runs Cucumber Scenarios",
-            dataProvider = "scenarios")
+    @Test(dataProvider = "scenarios")
     public void runScenario(PickleWrapper pickleWrapper, FeatureWrapper featureWrapper) {
         this.testNGCucumberRunner.runScenario(pickleWrapper.getPickle());
     }
@@ -50,5 +48,4 @@ public abstract class CucumberBaseTest extends BaseTest{
             return new Object[0][0];
         }
     }
-
 }

@@ -47,13 +47,13 @@ public abstract class BaseElement {
         try {
             Browser.getDriver().manage().timeouts().implicitlyWait(Browser.getTimeoutForCondition(), TimeUnit.SECONDS);
             element = Browser.getDriver().findElement(by);
-            log.info(String.format("%s: %s - is present;\n", getElementType(), by));
+            log.info(String.format("%s: %s - %s;\n", getElementType(), by,logProperties.getProperty("present")));
             return element.isDisplayed();
         } catch (NoSuchElementException e) {
-            log.info(String.format("%s: %s - is not present;\n \"NoSuchElementException\"\n", getElementType(), by));
+            log.info(String.format("%s: %s - %s;\n \"NoSuchElementException\"\n", getElementType(), by,logProperties.getProperty("presentFailure")));
             return false;
         } catch (Exception e) {
-            log.warn(String.format("Exception: " + e));
+            log.error(String.format("%s: %s - Exception: " + e));
         }
         return false;
     }
@@ -63,11 +63,11 @@ public abstract class BaseElement {
             Browser.getDriver().manage().timeouts().implicitlyWait(Browser.getTimeoutForCondition(), TimeUnit.SECONDS);
             elements = Browser.getDriver().findElements(by);
 
-            log.info(String.format("%s(%d): %s - are present;", getElementType(), elements.size(), by));
+            log.info(String.format("%s(%d): %s - %s;", getElementType(), elements.size(), by,logProperties.getProperty("presents")));
             long elementsPresentNum = elements.stream().filter(WebElement::isDisplayed).count();
             return elementsPresentNum > 0;
         } catch (NoSuchElementException e) {
-            log.info(String.format("%s: %s - are not present; \"NoSuchElementException\"", getElementType(), by));
+            log.info(String.format("%s: %s - %s; \"NoSuchElementException\"", getElementType(), by,logProperties.getProperty("presentsFailure")));
             return false;
         } catch (Exception e) {
             log.warn(String.format(("Exception: " + e)));
@@ -86,7 +86,7 @@ public abstract class BaseElement {
                     .until(ExpectedConditions.elementToBeClickable(element));
             return true;
         } catch (TimeoutException timeoutException) {
-            log.error(String.format("%s: %s - is not clickable;", getElementType(), by));
+            log.error(String.format("%s: %s - %s;", getElementType(), by,logProperties.getProperty("clickFailure")));
         }
         return false;
     }
@@ -95,7 +95,7 @@ public abstract class BaseElement {
         isElementPresent();
         String attributeValue = element.getAttribute(attributeName);
 
-        log.info(String.format("%s: %s - has '%s' attribute = %s;", getElementType(), by, attributeName, attributeValue));
+        log.info(String.format("%s: %s - %s '%s' = %s;", getElementType(), by,logProperties.getProperty("attribute"), attributeName, attributeValue));
         return attributeValue;
     }
 
@@ -103,7 +103,7 @@ public abstract class BaseElement {
         isElementPresent();
         String elementText = element.getText();
 
-        log.info(String.format("%s: %s - has text = %s;", getElementType(), by, elementText));
+        log.info(String.format("%s: %s - %s = %s;", getElementType(), by,logProperties.getProperty("text"), elementText));
         return elementText;
     }
 
@@ -114,7 +114,7 @@ public abstract class BaseElement {
 
         long nonEmpty = elementTextList.stream().filter(Predicate.not(String::isBlank)).count();
 
-        log.info(String.format("%s: %s - has %d non empty Strings;", getElementType(), by, nonEmpty));
+        log.info(String.format("%s: %s - %s(%d);", getElementType(), by,logProperties.getProperty("textList"),nonEmpty));
         return elementTextList;
     }
 
@@ -131,21 +131,21 @@ public abstract class BaseElement {
     public void scrollTo() {
         isElementPresent();
         Actions actions = new Actions(Browser.getDriver());
-        log.info(String.format("%s: %s - scrolled to;", getElementType(), by));
+        log.info(String.format("%s: %s - %s;", getElementType(), by,logProperties.getProperty("scroll")));
         actions.scrollToElement(element).build().perform();
     }
 
     public void click() {
         isElementPresent();
         element.click();
-        log.info(String.format("%s: %s - clicked;", getElementType(), by));
+        log.info(String.format("%s: %s - %s;", getElementType(), by,logProperties.getProperty("sendKeys")));
     }
 
     public void clickByAction() {
         isElementPresent();
         Actions action = new Actions(Browser.getDriver());
         action.click(element).build().perform();
-        log.info(String.format("%s: %s - clicked;", getElementType(), by));
+        log.info(String.format("%s: %s - %s;", getElementType(), by,logProperties.getProperty("sendKeys")));
     }
 
     public void waitForElementAttachment() {
@@ -178,19 +178,19 @@ public abstract class BaseElement {
         isElementPresent();
         Actions actions = new Actions(Browser.getDriver());
         actions.moveToElement(element).click(element).build().perform();
-        log.info(String.format("%s: %s - clicked;", getElementType(), by));
+        log.info(String.format("%s: %s - %s;", getElementType(), by,logProperties.getProperty("click")));
     }
 
     public void sendKeys(String keys) {
         isElementPresent();
         element.sendKeys(keys);
-        log.info(String.format("%s: %s - got keys '%s';", getElementType(), by, keys));
+        log.info(String.format("%s: %s - %s '%s';", getElementType(), by,logProperties.getProperty("sendKeys"), keys));
     }
 
     public void sendKeysToIndex(int i, String keys) {
         areElementsPresent();
         elements.get(i).sendKeys(keys);
-        log.info(String.format("%s: %s[%d] - got keys '%s';", getElementType(), by, i, keys));
+        log.info(String.format("%s: %s[%d] - %s '%s';", getElementType(), by, i,logProperties.getProperty("sendKeys"), keys));
     }
 
     public void clickByJS() {
@@ -199,6 +199,6 @@ public abstract class BaseElement {
             ((JavascriptExecutor) Browser.getDriver()).executeScript("arguments[0].style.border='3px solid blue'", element);
         }
         ((JavascriptExecutor) Browser.getDriver()).executeScript("arguments[0].click()", element);
-        log.info(String.format("%s: %s - clicked via JS;", getElementType(), by));
+        log.info(String.format("%s: %s - %s;", getElementType(), by,logProperties.getProperty("clickByJS")));
     }
 }

@@ -45,8 +45,8 @@ public class TestListener implements ITestListener {
         return TimeUnit.MILLISECONDS.toSeconds(iTestResult.getEndMillis() - iTestResult.getStartMillis());
     }
 
-    @Attachment(value = "Last screen state", type = "image/png")
-    private static byte[] takeScreenshot() {
+    @Attachment(value = "Last screen state", fileExtension = "image/png")
+    public static byte[] takeScreenshot() {
         return ((TakesScreenshot) Browser.getDriver()).getScreenshotAs(OutputType.BYTES);
     }
 

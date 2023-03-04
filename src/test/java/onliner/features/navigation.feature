@@ -1,4 +1,3 @@
-@TestNG
 Feature: Onliner
 
   Scenario: Step-by-step navigation to "Игровые ноутбуки" page
