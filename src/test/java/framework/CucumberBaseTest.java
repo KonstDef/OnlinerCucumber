@@ -3,7 +3,6 @@ package framework;
 import io.cucumber.testng.*;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.*;
-
 @Log4j2
 @Listeners(TestListener.class)
 public abstract class CucumberBaseTest{
@@ -49,5 +48,4 @@ public abstract class CucumberBaseTest{
             return new Object[0][0];
         }
     }
-
 }
